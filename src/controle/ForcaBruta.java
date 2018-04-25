@@ -6,6 +6,7 @@ package controle;
 
 public class ForcaBruta {
 	
+	
 	public static String msg = "";
 	public static int sol = 0;
 	
