@@ -29,9 +29,9 @@ import java.awt.event.FocusEvent;
 public class Principal extends JFrame {
 
 	private JPanel contentPane;
-	public int indiceSelecionado = 0;
-	public int qtdRainha = 8;
 	private JTextField qtdR;
+	public int indiceSelecionado = 0;		// Variavel para verificar qual opção foi selecionada
+	public int qtdRainha = 8;				// Variavel para a quantidade de rainhas por padrão.
 	
 
 	/**
@@ -98,7 +98,7 @@ public class Principal extends JFrame {
 		qtdR = new JTextField();
 		qtdR.addFocusListener(new FocusAdapter() {
 			@Override
-			public void focusLost(FocusEvent arg0) {
+			public void focusLost(FocusEvent arg0) {	// Valida que o vamor minimo de rainhas seja 4 (quantidade minima para existir solução)
 				if (qtdR.getText() == ""){
 					qtdR.setText("4");
 				}
@@ -109,7 +109,7 @@ public class Principal extends JFrame {
 				Boolean erro = true;
 				try {
 					int total = Integer.parseInt(qtdR.getText());
-					if ( total < 4){ 		// Minimo 4
+					if ( total < 4){ 		// Se numero for menor que 4 ele preenche automaticamente 4		
 						qtdR.setText("4");					
 					}
 					erro = false;				       
@@ -120,7 +120,7 @@ public class Principal extends JFrame {
 		qtdR.setText("8");
 		qtdR.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyTyped(KeyEvent e) {	//Validador para não ter algo diferente de numeros digitado
 				String caracteres="0987654321";
 				if(!caracteres.contains(e.getKeyChar()+"")){
 				e.consume();
@@ -157,16 +157,17 @@ public class Principal extends JFrame {
 		contentPane.add(lblDiegoOAntunes, gbc_lblDiegoOAntunes);
 		
 		btnExecutar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				textExibicao.setText(comboBoxIA.getSelectedItem().toString());
+			public void actionPerformed(ActionEvent arg0) {			// Tratamento do botão de execução
 				
-				indiceSelecionado = comboBoxIA.getSelectedIndex();
+				textExibicao.setText(comboBoxIA.getSelectedItem().toString());	// Exibe no textPanel o metodo utilizado
 				
-				qtdRainha = Integer.parseInt(qtdR.getText());				
+				indiceSelecionado = comboBoxIA.getSelectedIndex();	// Pega a posição do metodo selecionado
+				
+				qtdRainha = Integer.parseInt(qtdR.getText());		// Converte para inteiro a quantidade de rainhas escolhido.
 
-				switch (indiceSelecionado){
+				switch (indiceSelecionado){		// Exibe no textPanel o resultado do metodo escolhido
 				case 0:
-					textExibicao.setText(forcaBruta());
+					textExibicao.setText(forcaBruta());		
 					break;
 				case 1:					
 					textExibicao.setText(HillClimb());
@@ -175,7 +176,7 @@ public class Principal extends JFrame {
 					textExibicao.setText(SimulatedAnnealing());
 					break;
 				case 3:
-					textExibicao.setText(AlgoritimoGenetico());
+					textExibicao.setText(AlgoritmoGenetico());
 					break;					
 				}
 
@@ -184,35 +185,11 @@ public class Principal extends JFrame {
 		
 	}
 	
-	private String forcaBruta(){
+	private String forcaBruta(){			// Função para chamada da solução por tentativa e erro
 		return new controle.ForcaBruta().rodaForcaBruta(qtdRainha);
 	}
 	
-	
-	private String tabuleiro(int[] posRainha){
-		String msg = "";
-		
-		if (posRainha != null){						
-			for(int x: posRainha){
-				for(int y = 0; y < qtdRainha ; y++){
-					if(x == y){
-						msg = msg + "R\t";
-					}
-					else {
-						msg = msg +"-\t";
-					}
-				}
-				msg = msg +"\n\n";
-			}
-			return msg;
-			}
-			else{
-				return "Sem Solução";
-			}
-	}
-	
-	
-	private String HillClimb(){
+	private String HillClimb(){				// Função para chamada da solução por Hill Climb
 		Boolean erro = true;
 		int iteracao = 50000;
 		do{
@@ -232,8 +209,7 @@ public class Principal extends JFrame {
 		return tabuleiro(controle.HillClimbing.solve(qtdRainha, iteracao));
 	}
 	
-	
-	private String SimulatedAnnealing(){
+	private String SimulatedAnnealing(){	// Função para chamada da solução por Simulated Annealing
 		Boolean erro = true;
 		int iteracao = 50000;
 		int temperatura = 120;
@@ -288,12 +264,11 @@ public class Principal extends JFrame {
 		return tabuleiro(controle.SimulatedAnnealing.solve(qtdRainha, iteracao, temperatura, fatorRefrigeracao));
 	}
 
-	private String AlgoritimoGenetico(){
-		//public int[] solve(int n, int populationSize, double mutationProbability, int numOfGenerations)
+	private String AlgoritmoGenetico(){		// Função para chamada da solução por Algoritmo Genetico
 		Boolean erro = true;
-		int populacao = 100;
-		double mutacao = 0.7;
-		int geracoes = 100;
+		int populacao = 10;
+		double mutacao = 0.5;
+		int geracoes = 50000;
 		
 		do{
 			String it = JOptionPane.showInputDialog("Qual o tamanho da população?", populacao);			
@@ -339,6 +314,28 @@ public class Principal extends JFrame {
 		
 		
 		return tabuleiro(new controle.GeneticAlgorithm().solve(qtdRainha, populacao, mutacao, geracoes));
+	}
+	
+	private String tabuleiro(int[] posRainha){		//Cria a String que será usada para exibir o tabuleiro no textPanel
+		String msg = "";
+		
+		if (posRainha != null){						
+			for(int x: posRainha){
+				for(int y = 0; y < qtdRainha ; y++){
+					if(x == y){
+						msg = msg + "R\t";
+					}
+					else {
+						msg = msg +"-\t";
+					}
+				}
+				msg = msg +"\n\n";
+			}
+			return msg;
+			}
+			else{
+				return "Sem Solução";
+			}
 	}
 
 }

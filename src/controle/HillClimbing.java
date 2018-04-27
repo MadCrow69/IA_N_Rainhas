@@ -7,12 +7,12 @@ import java.util.Arrays;
  */
 public class HillClimbing {
 
-    // make a move for hill climbing
+    // Faz um movimento para subida
     public static int[] firstChoiceHillClimbing(int n, int maxNumOfIterations) {
         int[] r = SolverUtils.generateRandomState(n);
         int costToBeat = SolverUtils.getHeuristicCost(r);
 
-        // terminate when it reaches max num of iterations or problem is solved.
+        // Termina quando atingi o número máximo de iterações ou o problema for solucionado.
         for (int x = 0; x < maxNumOfIterations && costToBeat > 0; x++) {
 
             boolean flag = true;
@@ -20,9 +20,10 @@ public class HillClimbing {
             for (int col = 0; col < n && flag; col++) {
 
                 for (int row = 0; row < n; row++) {
-                    // we do not need to evaluate because we already know current cost by costToBeat.
-                    if (row == r[col])
+                	// Não precisa avaliar porque já se sabe o custo atual por costToBeat.
+                    if (row == r[col]){
                         continue;
+                    }
 
                     // init new copy
                     int[] rc = Arrays.copyOf(r, n);
@@ -37,12 +38,11 @@ public class HillClimbing {
                 }
             }
 
-            // if it gets stuck at local maxima
-            if (tempCostToBeat == costToBeat)
+            // Se ficar preso no local máximo
+            if (tempCostToBeat == costToBeat){
                 r = SolverUtils.generateRandomState(n);
-
+            }
         }
-
         return costToBeat == 0 ? r : null; // return solution if solved
     }
 

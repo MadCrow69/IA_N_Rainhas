@@ -1,8 +1,10 @@
-/*Ideia principal do codigo tirado do link:
-* https://gist.github.com/marcoscastro/501e816d6bb42a104eba
-*/
 
 package controle;
+
+/**
+ * Ideia principal do codigo tirado do link:
+ * https://gist.github.com/marcoscastro/501e816d6bb42a104eba
+ */
 
 public class ForcaBruta {
 	
@@ -123,19 +125,16 @@ public class ForcaBruta {
 	int[][] tab = new int[N][N];
 
 
-	// inserindo todas as linhas
+	// Cria o tabuleiro sem nenhuma rainha
 	for (int l = 0; l < N; l++){
 		for(int c = 0; c < N; c++){
 			tab[l][c] = 0;
 		}
 	}
 
-	// imprime todas as soluções
-	executar(tab, N, 0);
+	
+	executar(tab, N, 0); // Executa o programa
 
-	// imprime a quantidade de soluções
-	//System.out.println("\nEncontradas " + sol + " solucoes!\n");
-	//msg = msg + "Encontradas " + sol + " solucoes!";
 	if (msg == ""){
 		return "Sem solução";
 	}

@@ -1,19 +1,19 @@
 package controle;
 
-/*
-* Solver utils class provides some helper methods like creating initial state.
-* Tirado de base de https://github.com/selimfirat/ai-n-queens
+/**
+ *  A classe Solver utils fornece alguns métodos auxiliares, como a criação do estado inicial.
+ *  Tirado de base de https://github.com/selimfirat/ai-n-queens
  */
 public class SolverUtils {
 
-    // Generate state that all queens have row # 0
-    public static int[] generateAllOneState(int n) {
 
+    public static int[] generateAllOneState(int n) { 	// Gera o estado em que todas as rainhas têm linha # 0
+    	
         return new int[n];
     }
 
-    // Randomizes state
-    public static int[] randomizeState(int[] r) {
+    
+    public static int[] randomizeState(int[] r) {		// Gera o estado randomico
 
         for (int i = 0; i < r.length; i++)
             r[i] = (int) (Math.random() * r.length);
@@ -21,17 +21,17 @@ public class SolverUtils {
         return r;
     }
 
-    // generates random initial state
-    public static int[] generateRandomState(int n) {
+    
+    public static int[] generateRandomState(int n) { 	// Gera o estado inicial aleatório
 
         return randomizeState(generateAllOneState(n));
     }
 
-    // Returns heuristic cost
-    public static int getHeuristicCost(int[] r) {
+    
+    public static int getHeuristicCost(int[] r) {		// Retorna o custo da Heuristica
         int h = 0;
 
-        // increment cost if two queens are in same row or in same diagonal.
+     // incrementa o custo se duas rainhas estiverem na mesma linha ou na mesma diagonal.
         for (int i = 0; i < r.length; i++)
             for (int j = i + 1; j < r.length; j++)
                 if (r[i] == r[j] || Math.abs(r[i] - r[j]) == j - i)

@@ -5,18 +5,18 @@ import java.util.Comparator;
 
 /**
  * Created by mrsfy on 07-Jun-17.
+ * Tirado de base de https://github.com/selimfirat/ai-n-queens
  */
 public class GeneticAlgorithm {
 
 
     public int[] solve(int n, int populationSize, double mutationProbability, int numOfGenerations) {
 
-        populationSize = populationSize - (populationSize % 2); // cada um deve ter um companheiro.
+        populationSize = populationSize - (populationSize % 2); 	// cada um deve ter um par.
 
         int[][] population = generatePopulation(n, populationSize);
 
         int maxFitness = getMaxFitness(n);
-
 
         for (int x = 0; x < numOfGenerations; x++) {
 
@@ -54,13 +54,13 @@ public class GeneticAlgorithm {
         return population;
     }
 
-    private int[][] getSelectedPopulation(int[][] population) {
+    private int[][] getSelectedPopulation(int[][] population) {			// Retorna a população gerada
         Arrays.sort(population, Comparator.comparingInt(this::getFitness));
 
         return population;
     }
 
-    private int[] tryToMutate(int[] r, double mutationProbability) {
+    private int[] tryToMutate(int[] r, double mutationProbability) {	// Tenta uma nova mutação
         if (satisfyProb(mutationProbability))
             r[(int)(Math.random()*r.length)] = (int)(Math.random()*r.length);
 
@@ -71,19 +71,19 @@ public class GeneticAlgorithm {
         return prob >= Math.random();
     }
 
-    private int getFitness(int[] r) {
+    private int getFitness(int[] r) {	// 
         return getMaxFitness(r.length) - SolverUtils.getHeuristicCost(r);
     }
 
-    private int getMaxFitness(int n) {
+    private int getMaxFitness(int n) {		// 
         return n*(n-1)/2;
     }
 
-    private int[] generateChromosome(int n) {
+    private int[] generateChromosome(int n) {		// Gera o cromossomo
         return SolverUtils.generateRandomState(n);
     }
 
-    private int[][] generatePopulation(int n, int populationSize) {
+    private int[][] generatePopulation(int n, int populationSize) {		// Gera a população
         int[][] population = new int[populationSize][];
         for (int i = 0; i < populationSize; i++)
             population[i] = generateChromosome(n);
